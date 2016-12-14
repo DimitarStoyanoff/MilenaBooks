@@ -1,4 +1,4 @@
-package stoyanoff.milenabooks;
+package stoyanoff.milenabooks.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,13 +18,19 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import stoyanoff.milenabooks.services.BookLoader;
+import stoyanoff.milenabooks.R;
+import stoyanoff.milenabooks.activities.BookMakerActivity;
+import stoyanoff.milenabooks.activities.BookPagerActivity;
+import stoyanoff.milenabooks.model.Book;
+
 /**
  * Created by Stoyanoff on 28/11/2016.
  */
 
 public class BooksFragment extends Fragment {
 
-    private RecyclerView mPhotoRecyclerView;
+    private RecyclerView mBooksRecyclerView;
     private List<Book> aBooks  = new ArrayList<>();
     private FloatingActionButton fab;
     private BookLoader bookLoader;
@@ -64,12 +70,12 @@ public class BooksFragment extends Fragment {
         });
 
 
-        mPhotoRecyclerView = (RecyclerView) v
+        mBooksRecyclerView = (RecyclerView) v
                 .findViewById(R.id.fragment_books_recycler_view);
-        mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        //mPhotoRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(3,50,true));
+        mBooksRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
-        mPhotoRecyclerView.setAdapter(new BookAdapter(aBooks));
+
+        mBooksRecyclerView.setAdapter(new BookAdapter(aBooks));
 
         updateAdapter();
 
@@ -81,8 +87,6 @@ public class BooksFragment extends Fragment {
 
             }
         });
-
-
 
 
         return v;
@@ -97,7 +101,7 @@ public class BooksFragment extends Fragment {
                 public void receivedBooks(List<Book> books) {
                     if (isAdded()) {
                         aBooks = books;
-                        mPhotoRecyclerView.setAdapter(new BookAdapter(aBooks));
+                        mBooksRecyclerView.setAdapter(new BookAdapter(aBooks));
                         swipeRefreshLayout.setRefreshing(false);
 
                     }
@@ -108,7 +112,17 @@ public class BooksFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        
+
+        BookMakerFragment bookMaker = new BookMakerFragment();
+        bookMaker.notifyForNewBook(new BookMakerFragment.OnAddNewBookItemListener() {
+            @Override
+            public void newBookItemCreated(Book book) {
+
+                aBooks.add(aBooks.size()-1,book);
+                mBooksRecyclerView.getAdapter().notifyItemInserted(aBooks.size()-1);
+
+            }
+        });
 
         updateAdapter();
 

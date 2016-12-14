@@ -1,4 +1,4 @@
-package stoyanoff.milenabooks;
+package stoyanoff.milenabooks.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +11,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import stoyanoff.milenabooks.R;
+import stoyanoff.milenabooks.model.Book;
 
 /**
  * Created by Stoyanoff on 28/11/2016.

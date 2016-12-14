@@ -1,4 +1,4 @@
-package stoyanoff.milenabooks;
+package stoyanoff.milenabooks.model;
 
 import com.google.gson.annotations.SerializedName;
 

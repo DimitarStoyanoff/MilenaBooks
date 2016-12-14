@@ -1,4 +1,4 @@
-package stoyanoff.milenabooks;
+package stoyanoff.milenabooks.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import stoyanoff.milenabooks.R;
+import stoyanoff.milenabooks.fragments.SingleBookFragment;
+import stoyanoff.milenabooks.model.Book;
 
 /**
  * Created by Stoyanoff on 28/11/2016.

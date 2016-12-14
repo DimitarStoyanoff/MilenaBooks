@@ -1,9 +1,11 @@
-package stoyanoff.milenabooks;
+package stoyanoff.milenabooks.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+
+import stoyanoff.milenabooks.R;
 
 /**
  * Created by Stoyanoff on 22/11/2016.

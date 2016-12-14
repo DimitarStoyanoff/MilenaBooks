@@ -1,6 +1,8 @@
-package stoyanoff.milenabooks;
+package stoyanoff.milenabooks.activities;
 
 import android.support.v4.app.Fragment;
+
+import stoyanoff.milenabooks.fragments.BookMakerFragment;
 
 /**
  * Created by Stoyanoff on 1/12/2016.

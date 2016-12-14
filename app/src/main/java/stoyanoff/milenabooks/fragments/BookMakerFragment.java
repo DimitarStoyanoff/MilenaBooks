@@ -1,4 +1,4 @@
-package stoyanoff.milenabooks;
+package stoyanoff.milenabooks.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +20,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import stoyanoff.milenabooks.model.CustomImage;
+import stoyanoff.milenabooks.services.BookLoader;
+import stoyanoff.milenabooks.R;
+import stoyanoff.milenabooks.model.Book;
+import stoyanoff.milenabooks.model.ImgurModel;
+
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -39,11 +45,14 @@ public class BookMakerFragment extends Fragment {
     private ImageView uploadImageView;
     private Button bookSubmitButton;
     private ProgressBar progressBar;
-    private BookLoader bookLoader;
-    private OnAddNewBookItemListener aOnAddNewBookItemListener;
+
 
     private Book newBook;
     private File imageFile;
+    private BookLoader bookLoader;
+    private Uri  imageUri;
+    private boolean isUploadSuccessful;
+    private OnAddNewBookItemListener aOnAddNewBookItemListener;
 
 
 
@@ -73,7 +82,9 @@ public class BookMakerFragment extends Fragment {
 
         newBook = new Book();
 
+
         uploadImageView.setImageResource(R.drawable.upload_image_icon);
+        if(imageUri != null) uploadImageView.setImageURI(imageUri);
 
         uploadImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,12 +127,15 @@ public class BookMakerFragment extends Fragment {
                         @Override
                         public void receivedImage(CustomImage imgurModel) {
                             if(imgurModel != null) {
-                           // newBook.setPictureUrl(imgurModel.getCustomImage().getFileURL());
+                             // newBook.setPictureUrl(imgurModel.getCustomImage().getFileURL());
                                 newBook.setPictureUrl(imgurModel.getFileURL());
 
-                                uploadBookCallback(newBook,aOnAddNewBookItemListener );
+                                uploadBookCallback();
                             } else {
                                 Toast.makeText(getContext(), "No image uploaded", Toast.LENGTH_SHORT).show();
+
+                                bookSubmitButton.setClickable(true);
+                                progressBar.setIndeterminate(false);
                             }
                         }
                     });
@@ -134,27 +148,30 @@ public class BookMakerFragment extends Fragment {
     }
 
 
-    private void uploadBookCallback(Book book,OnAddNewBookItemListener addNewBookItemListener ){
-
-
-        aOnAddNewBookItemListener = addNewBookItemListener;
+    private void uploadBookCallback(){
         bookLoader.uploadOneBook(newBook, new BookLoader.OnBookUploadedListener() {
             @Override
             public void bookUploaded(String message) {
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 bookSubmitButton.setClickable(true);
                 progressBar.setIndeterminate(false);
-                //// TODO: 5/12/2016
+
                 if(message.equals("Book uploaded")){
 
-
-                    aOnAddNewBookItemListener.newBookItemCreated(newBook);
+                    isUploadSuccessful = true;
+                   // aOnAddNewBookItemListener.newBookItemCreated(newBook);
 
 
                 }
 
             }
         });
+
+    }
+
+    public void notifyForNewBook(OnAddNewBookItemListener onAddNewBookItemListener){
+        aOnAddNewBookItemListener = onAddNewBookItemListener;
+        if(isUploadSuccessful) aOnAddNewBookItemListener.newBookItemCreated(newBook);
 
     }
 
@@ -171,7 +188,7 @@ public class BookMakerFragment extends Fragment {
 
 
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            Uri  imageUri = data.getData();
+            imageUri = data.getData();
             uploadImageView.setImageURI(imageUri);
             try {
 

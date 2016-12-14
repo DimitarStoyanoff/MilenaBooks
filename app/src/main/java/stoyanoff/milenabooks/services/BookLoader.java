@@ -1,4 +1,4 @@
-package stoyanoff.milenabooks;
+package stoyanoff.milenabooks.services;
 
 import android.util.Log;
 
@@ -21,6 +21,9 @@ import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import stoyanoff.milenabooks.model.Book;
+import stoyanoff.milenabooks.model.CustomImage;
+import stoyanoff.milenabooks.model.ImgurModel;
 
 /**
  * Created by Stoyanoff on 29/11/2016.
@@ -109,7 +112,7 @@ public class BookLoader {
             }
         });
     }
-
+//
 //    public void sendBitmap(File imageFile, OnBitmapSentListener mBitmapListener){
 //        aBitmapSentListener = mBitmapListener;
 //
